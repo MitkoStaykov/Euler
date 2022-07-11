@@ -1,6 +1,9 @@
 #include<bits/stdc++.h>
+//#include <fstream>
 using namespace std;
 #define m 1000000007
+
+
 
 // Recursive function to return (x ^ n) % m
 long long modexp(long long x, long long n)
@@ -31,7 +34,7 @@ long long getFractionModulo(long long b)
 
 long long GCD ( long long a , long long b )
 {
-    if (b == 0)
+    if (b == 0 )
         return a;
     return GCD( b , a%b ) ;
 }
@@ -64,20 +67,20 @@ long long multiplicativeOrder(long long  N)
     return -1 ;
 }
 
-
-//int grid = 20;
-long long result = 0;
-
-void func(long long starti, long long endi,long long startj, long long endj)
+int main()
 {
+//ofstream fd;
+//fd.open("res.txt");
 
+int grid = 3;
 long long temp = 0;
+long long result = 1;
 long long mord = 0;
 long long a = 1;
-for (long long i = starti ; i < endi+1 ; i++)
-    {for (long long j = startj ; j < endj+1 ; j++)
+for (long long i = 1 ; i < grid+1 ; i++)
+    {for (long long j = 1 ; j < grid+1 ; j++)
         {
-            a=1;
+	    a=1;
             if (i==j)
                 continue;
             if (GCD(i,j)!=1)
@@ -104,7 +107,7 @@ for (long long i = starti ; i < endi+1 ; i++)
 
 
                 //////////////2
-            if(i%2==0 && temp%3!=0 && 3*i3<10*j3)
+            if(i%2==0 && i%3!=0 && 3*i3<10*j3)
                 {
                     a=2;
                     goto calc;
@@ -120,12 +123,10 @@ for (long long i = starti ; i < endi+1 ; i++)
                     a=2;
                     goto calc;
                 }
-            if(i%2==0)
-                continue;
-                ////////////9
-            if(temp%3==0 && i<j && multiplicativeOrder(temp/9) < multiplicativeOrder(temp/3) )
-                {
 
+                ////////////9
+            if(temp%3==0 && i<j && multiplicativeOrder(temp/9) < multiplicativeOrder(temp/3))
+                {
                     a=9;
                     goto calc;
                 }
@@ -135,60 +136,24 @@ for (long long i = starti ; i < endi+1 ; i++)
                     goto calc;
                 }
 
-
-
-
             calc:
             mord = multiplicativeOrder(temp/a);
-            if (mord < 1)
+            /*if (mord < 1)
                 {
-                    cout <<"DEBUG"<<i<<" "<<j<<" "<<mord<<" "<<temp<<" "<<a<<" "<<endl;
+                    cout <<"UNKN"<<i<<" "<<j<<" "<<mord<<" "<<temp<<" "<<a<<" "<<endl;
                     continue;
-                }
-            /*if (mord < 10)
-                {
-                    cout <<"SMALL"<<i<<" "<<j<<" "<<mord<<" "<<temp<<" "<<a<<" "<<endl;
                 }*/
-            //cout<<i<<" "<<j<<" "<<temp<<"*m="<<a<<"*10^"<< mord<<"  res="<<j3*((modexp(10,mord)-1)*getFractionModulo(temp/a)%m) % m<<endl;
+            cout<<i<<" "<<j<<" "<<temp<<"*m="<<a<<"*10^"<< mord<<"  res="<<j3*((modexp(10,mord)-1)*getFractionModulo(temp/a)%m) % m<<endl;
 
 
             result += j3*( ((modexp(10,mord)-1)*getFractionModulo(temp/a)) %m) ;
+            //result += ((j*(modexp(10,mord)-1)%m)*j%m)*(j*(getFractionModulo(temp/a)%m) % m)%m;
             result %= m;
         }
+        //fd <<"\n";
         cout<<i<<endl;
     }
-cout<<"thread"<<starti<<"to "<<endi<<" finished"<<endl;
-}
-
-
-
-int main()
-{
-//int grid = 200;
-    result++;
-    std::thread first (func,1,46,1,200);
-    std::thread second (func,47,96,1,200);
-    std::thread third (func,97,140,1,200);
-    std::thread fourth (func,141,200,1,200);
-
- /*   std::thread first (func,1,5,1,20);
-    std::thread second (func,6,10,1,20);
-    std::thread third (func,11,15,1,20);
-    std::thread fourth (func,16,20,1,20);
-*/
-    first.join();
-    second.join();
-    third.join();
-    fourth.join();
-    cout<<result;
+cout<<result;
     return 0;
 }
 
-
-//230811060  292 s fix ij inequation
-//121405329  327 s fix2 and 6 mord
-//525687971  295 s fix3 2 and 6
-//957245454  307 s fix 139
-//667377928  323 s fix 9->3
-//501982226  268 s fix ineq <2
-//119719335 ans
